@@ -3,9 +3,11 @@
   <groupId>com.github.eyce9000</groupId>
   <artifactId>iem4j-client</artifactId>
   <versioning>
+    <release>0.0.1-SNAPSHOT-${buildNumber}</release>
     <versions>
       <version>0.0.1-SNAPSHOT</version>
+      <version>0.0.1-SNAPSHOT-${buildNumber}</version>
     </versions>
-    <lastUpdated>20150311021432</lastUpdated>
+    <lastUpdated>20150317181005</lastUpdated>
   </versioning>
 </metadata>

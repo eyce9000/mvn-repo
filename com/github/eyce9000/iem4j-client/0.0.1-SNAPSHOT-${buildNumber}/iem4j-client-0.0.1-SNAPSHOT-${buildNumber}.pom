@@ -2,12 +2,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.eyce9000</groupId>
 	<artifactId>iem4j-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT-${buildNumber}</version>
 	<name>IEM Client</name>
-	<properties>
-		<!-- github server corresponds to entry in ~/.m2/settings.xml -->
-		<github.global.server>github</github.global.server>
-	</properties>
+	<scm>
+    <connection>scm:git:git://github.com/eyce9000/iem-client.git</connection>
+  </scm>
+
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -87,13 +88,38 @@
 	<distributionManagement>
 		<repository>
 			<id>internal.repo</id>
+			<uniqueVersion>false</uniqueVersion>
 			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/mvn-repo</url>
+			<url>file://${project.build.directory}/../../mvn-repo</url>
 		</repository>
+		<snapshotRepository>
+      <id>snapshot.repo</id>
+      <uniqueVersion>false</uniqueVersion>
+      <name>Temporary Snapshot Repository</name>
+      <url>file://${project.build.directory}/../../mvn-repo</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<build>
+	  <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
+		
 		<plugins>
+		  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Build>${buildNumber}</Implementation-Build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -103,38 +129,33 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<!-- 
 			<plugin>
 				<artifactId>maven-deploy-plugin</artifactId>
 				<version>2.8.1</version>
 				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/../../mvn-repo</altDeploymentRepository>
+					<altDeploymentRepository>snapshot.repo::default::file://${project.build.directory}/../../mvn-repo</altDeploymentRepository>
 				</configuration>
 			</plugin>
+			 -->
 			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.11</version>
-				<configuration>
-					<message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
-					<noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-					<branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
-					<includes>
-						<include>**/*</include>
-					</includes>
-					<repositoryName>mvn-repo</repositoryName>      <!-- github repo name -->
-					<repositoryOwner>eyce9000</repositoryOwner>    <!-- github username -->
-				</configuration>
-				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
-					<execution>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>site</phase>
-					</execution>
-				</executions>
-			</plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doCheck>false</doCheck>
+          <doUpdate>false</doUpdate>
+        </configuration>
+      </plugin>
+      
 		</plugins>
 	</build>
 </project>

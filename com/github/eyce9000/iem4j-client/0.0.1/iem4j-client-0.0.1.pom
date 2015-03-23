@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.eyce9000</groupId>
 	<artifactId>iem4j-client</artifactId>
-	<version>0.0.1-SNAPSHOT-${buildNumber}</version>
+	<version>0.0.1</version>
 	<name>IEM Client</name>
 	<scm>
     <connection>scm:git:git://github.com/eyce9000/iem-client.git</connection>
@@ -88,20 +88,22 @@
 	<distributionManagement>
 		<repository>
 			<id>internal.repo</id>
-			<uniqueVersion>false</uniqueVersion>
+			<uniqueVersion>true</uniqueVersion>
 			<name>Temporary Staging Repository</name>
 			<url>file://${project.build.directory}/../../mvn-repo</url>
 		</repository>
+		<!-- 
 		<snapshotRepository>
       <id>snapshot.repo</id>
       <uniqueVersion>false</uniqueVersion>
       <name>Temporary Snapshot Repository</name>
       <url>file://${project.build.directory}/../../mvn-repo</url>
 		</snapshotRepository>
+		 -->
 	</distributionManagement>
 
 	<build>
-	  <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
+	  <finalName>${project.artifactId}-${project.version}</finalName>
 		
 		<plugins>
 		  <plugin>
